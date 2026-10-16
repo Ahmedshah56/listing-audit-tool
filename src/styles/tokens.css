@@ -1,0 +1,103 @@
+/* ---------- design tokens ---------- */
+
+:root {
+  /* brand identity: charcoal + gold */
+  --char-950: #14120e;
+  --char-900: #1b1813;
+  --char-800: #26221b;
+  --char-700: #38322a;
+
+  --gold-700: #b45309;
+  --gold-600: #d97706;
+  --gold-500: #f59e0b;
+  --gold-400: #fbbf24;
+  --gold-300: #fcd34d;
+  --gold-100: #fef3c7;
+
+  /* surfaces */
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --surface-soft: #faf8f3;
+  --ink: #1c1917;
+  --ink-soft: #4a443c;
+  --muted: #857c6e;
+  --border: #e7e0d1;
+  --border-strong: #d8cfb8;
+
+  /* status — always instantly readable */
+  --success: #16a34a;
+  --success-tint: #e7f6ec;
+  --warn: #d97706;
+  --warn-tint: #fdf1de;
+  --danger: #dc2626;
+  --danger-tint: #fdecec;
+
+  /* grade glow colors (pop on dark) */
+  --gA: #34d399;
+  --gB: #fbbf24;
+  --gC: #fb923c;
+  --gF: #f87171;
+
+  --accent: var(--gold-600);
+  --accent-strong: var(--gold-700);
+  --accent-ink: #1c1917;
+
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow: 0 1px 2px rgba(28, 25, 23, 0.06), 0 8px 28px rgba(28, 25, 23, 0.08);
+  --shadow-lift: 0 2px 4px rgba(28, 25, 23, 0.08), 0 16px 40px rgba(28, 25, 23, 0.14);
+
+  --font-display: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--gold-400);
+  color: var(--char-950);
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8bfa9;
+  border-radius: 8px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-600);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(245, 158, 11, 0.55);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
