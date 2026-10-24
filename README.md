@@ -1,8 +1,32 @@
 # Listing Audit Tool
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Try%20it-brightgreen)](https://listing-audit-tool-ahmeds-projects-227aabc2.vercel.app)
+[![React](https://img.shields.io/badge/React-18-61DAFB)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF)](https://vite.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 An expert Amazon product listing SEO auditor. Paste in a title, five bullet points, a description and backend search terms — get a 0–100 score, a letter grade, per-section breakdowns and a prioritized fix list in seconds.
 
+**Try it live: https://listing-audit-tool-ahmeds-projects-227aabc2.vercel.app** — no sign-up, nothing leaves your browser.
+
 I built this for my freelance work auditing Amazon listings. The rules it checks are the same ones I apply by hand on client listings: title length and keyword discipline, bullet quality, description depth and search-term hygiene. It also generates a clean Markdown audit report you can paste straight into an outreach email.
+
+## Who this helps
+
+- **Amazon sellers** who want an honest score on a listing before spending on ads
+- **Freelance listing specialists** who need a client-ready audit report in minutes, not hours
+- **Brand managers** checking whether a listing follows Amazon's own style rules
+
+### Sample audit: what a fix looks like
+
+A typical weak listing scores around **41/100 (F)**:
+
+- Title is 86 characters and repeats the main keyword four times
+- Two of the five bullet slots are empty, and one bullet is specs only
+- Description is under 200 characters
+- Search terms contain commas and repeat words already in the title, wasting bytes
+
+After applying the tool's fix list, the same listing scores **88/100 (B)**: a 172-character title with the brand first and no repetition, five benefit-led bullets that echo the title keywords, a 600+ character description, and clean space-separated search terms inside the 250-byte limit. Every point of that jump comes from changes a seller can make in one editing session.
 
 ## Features
 
