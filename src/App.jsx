@@ -210,6 +210,22 @@ export default function App() {
     window.setTimeout(() => setCopied(false), 2500);
   }
 
+  function downloadReport() {
+    const text = buildReport(input, result);
+    const slug =
+      (input.brand || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') ||
+      'listing';
+    const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${slug}-audit-report.md`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <>
       <header className="hero">
@@ -397,6 +413,13 @@ export default function App() {
                       <path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                     Copy audit report
+                  </button>
+                  <button className="btn btn-ghost" onClick={downloadReport}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M4 19h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    Download report
                   </button>
                 </div>
               </div>
