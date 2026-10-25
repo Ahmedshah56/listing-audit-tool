@@ -147,10 +147,20 @@ function analyzeTitle(title, brand) {
     score -= 8;
   }
 
-  // ALL-CAPS words
+  // ALL-CAPS words — ignoring the brand's own words, measurement tokens
+  // (32OZ, 500ML) and common product acronyms (BPA, USB, LED) that are
+  // normal in Amazon titles and are not shouting.
+  const ACRONYMS = new Set(['BPA', 'USB', 'LED', 'LCD', 'HD', 'UHD', 'FDA', 'EPA', 'ABS', 'PVC', 'TPU', 'EVA', 'XL', 'XXL']);
   const caps = (title.match(/\b[A-Z0-9]{2,}\b/g) || []).filter((w) => /[A-Z]/.test(w));
   const brandUpper = brand ? brand.toUpperCase() : null;
-  const capsFlagged = [...new Set(caps.filter((w) => w !== brandUpper && !/^\d+$/.test(w)))];
+  const brandWordsUpper = new Set(brand ? brand.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean) : []);
+  const capsFlagged = [
+    ...new Set(
+      caps.filter(
+        (w) => w !== brandUpper && !brandWordsUpper.has(w) && !/\d/.test(w) && !ACRONYMS.has(w)
+      )
+    ),
+  ];
   if (capsFlagged.length > 0) {
     checks.push({
       status: 'warn',
@@ -199,6 +209,16 @@ function analyzeBullets(bullets, title) {
   const checks = [];
   let score = 30;
   const filled = bullets.map((b) => b.trim()).filter((b) => b.length > 0);
+
+  if (filled.length === 0) {
+    checks.push({
+      status: 'fail',
+      label: 'No bullet points at all',
+      detail: 'Bullets are the most-read copy on the page. With none written, this section earns nothing.',
+      fix: 'Write all 5 bullets. Cover: headline benefit, key feature + outcome, materials/build, size/fit/compatibility, and guarantee or box contents.',
+    });
+    return { score: 0, checks };
+  }
 
   if (filled.length === 5) {
     checks.push({
@@ -363,17 +383,17 @@ function analyzeSearchTerms(terms, title) {
 
   if (bytes <= 250) {
     checks.push({
-      status: bytes > 200 ? 'warn' : 'pass',
+      status: bytes > 245 ? 'warn' : 'pass',
       label: `Search terms within limit (${bytes}/250 bytes)`,
       detail:
-        bytes > 200
-          ? `Only ${250 - bytes} bytes of headroom left — close to the cutoff.`
-          : `${250 - bytes} bytes of headroom remaining. Amazon indexes these invisibly.`,
-      ...(bytes > 200
-        ? { fix: 'Trim the weakest terms to stay safely under 250 bytes — anything past the limit is silently ignored.' }
+        bytes > 245
+          ? `Only ${250 - bytes} bytes of headroom left — one long word from the cutoff.`
+          : `${250 - bytes} bytes of headroom remaining. Amazon indexes these invisibly, and using the full allowance is good practice.`,
+      ...(bytes > 245
+        ? { fix: 'Trim the weakest term to keep a small safety margin — anything past 250 bytes is silently ignored.' }
         : {}),
     });
-    if (bytes > 200) score -= 3;
+    if (bytes > 245) score -= 3;
   } else {
     checks.push({
       status: 'fail',
@@ -395,6 +415,15 @@ function analyzeSearchTerms(terms, title) {
   }
 
   const words = significantWords(terms);
+  if (words.length === 0) {
+    checks.push({
+      status: 'warn',
+      label: 'No indexable keywords in search terms',
+      detail: 'Every word here is a filler word Amazon already understands. These bytes index nothing new.',
+      fix: 'Replace filler words with real keywords: synonyms, alternate spellings, materials, and use cases not already in your title.',
+    });
+    score -= 6;
+  }
   const freq = frequencies(words);
   const dupes = [...freq.entries()].filter(([, c]) => c >= 2);
   if (dupes.length > 0) {
